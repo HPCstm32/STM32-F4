@@ -1,4 +1,4 @@
-/**
+﻿/**
   ******************************************************************************
   * @file    EXTI/main.c 
   * @author  MCD Application Team
@@ -55,13 +55,16 @@ int main(void)
      */
 
   /* Initialize LEDs mounted on STM32F4-Discovery board */
+  // 這邊和 前一個 Example 一樣，只不過用了 Function 包裝了起來
   STM_EVAL_LEDInit(LED4);
   STM_EVAL_LEDInit(LED3);
 
   /* Configure EXTI Line0 (connected to PA0 pin) in interrupt mode */
+  // 設定 EXTI 0 和 PA0
   EXTILine0_Config();
 
   /* Generate software interrupt: simulate a rising edge applied on EXTI0 line */
+  // 自己產生一個 Software Interrupt
   EXTI_GenerateSWInterrupt(EXTI_Line0);
 
   while (1)
@@ -74,6 +77,65 @@ int main(void)
   * @param  None
   * @retval None
   */
+  /*
+   *	GPIO A 0 -----------------
+   *							 |
+   *	GPIO B 0 -----------------
+   *							 |
+   *	GPIO C 0 ---------------------------------> EXTI 0
+   *							 |
+   *	GPIO D 0 -----------------
+   *							 |
+   *	GPIO E 0 -----------------
+   *
+   *
+   *	GPIO A 1 -----------------
+   *							 |
+   *	GPIO B 1 -----------------
+   *							 |
+   *	GPIO C 1 ---------------------------------> EXTI 1
+   *							 |
+   *	GPIO D 1 -----------------
+   *							 |
+   *	GPIO E 1 -----------------
+   *
+   *
+   *
+   *	GPIO A 2 -----------------
+   *							 |
+   *	GPIO B 2 -----------------
+   *							 |
+   *	GPIO C 2 ---------------------------------> EXTI 2
+   *							 |
+   *	GPIO D 2 -----------------
+   *							 |
+   *	GPIO E 2 -----------------
+   *	.
+   *	.
+   *	.
+   *	.
+   *	GPIO A 15-----------------
+   * 							 |
+   *    GPIO B 15-----------------
+   * 						 	 |
+   *    GPIO C 15---------------------------------> EXTI 15
+   * 							 |
+   *    GPIO D 15-----------------
+   * 							 |
+   *    GPIO E 15-----------------
+   *
+   *
+   *
+   *	EXTI 0 ----------
+   *	                |
+   *	EXTI 1 ----------
+   *                    |
+   *	EXTI 2 -------------------> NVIC
+   *	.
+   *	.
+   *	.
+   *
+   */
 void EXTILine0_Config(void)
 {
   
