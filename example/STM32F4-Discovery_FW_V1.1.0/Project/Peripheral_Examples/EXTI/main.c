@@ -1,4 +1,4 @@
-﻿/**
+/**
   ******************************************************************************
   * @file    EXTI/main.c 
   * @author  MCD Application Team
@@ -175,8 +175,10 @@ void EXTILine0_Config(void)
   NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;
-  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+  NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;				// FIXME: ???
   NVIC_Init(&NVIC_InitStructure);
+	
+	// 不要忘記，中斷被觸發時，會去 stm32f4xx_it.c 裡面的 EXTI0_IRQHandler
 }
 
 #ifdef  USE_FULL_ASSERT
