@@ -56,11 +56,12 @@ int main(void)
 
   /* Initialize LEDs mounted on STM32F4-Discovery board */
   // 這邊和 前一個 Example 一樣，只不過用了 Function 包裝了起來
+  // 因為我們需要 LED，所以在這邊先 Init LED GPIO
   STM_EVAL_LEDInit(LED4);
   STM_EVAL_LEDInit(LED3);
 
   /* Configure EXTI Line0 (connected to PA0 pin) in interrupt mode */
-  // 設定 EXTI 0 和 PA0
+  // 設定 EXTI 0 和 PA0(Button)
   EXTILine0_Config();
 
   /* Generate software interrupt: simulate a rising edge applied on EXTI0 line */
@@ -145,25 +146,32 @@ void EXTILine0_Config(void)
   /* Enable GPIOA clock */
   RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
   /* Enable SYSCFG clock */
-  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);
+  RCC_APB2PeriphClockCmd(RCC_APB2Periph_SYSCFG, ENABLE);	// NVIC 要啟動 System Config，而且還是在 APB2 Bus
+  															// AHB1, AHB2, AHB3
+  															// APB1, APB2
   
   /* Configure PA0 pin as input floating */
-  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;
-  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;
-  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;
+  // Enable GPIO Group A
+  GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IN;				// Button is input mode.
+  GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_NOPULL;			// FIXME: ???
+  GPIO_InitStructure.GPIO_Pin = GPIO_Pin_0;					// 第 0 根 Pin
   GPIO_Init(GPIOA, &GPIO_InitStructure);
 
   /* Connect EXTI Line0 to PA0 pin */
   SYSCFG_EXTILineConfig(EXTI_PortSourceGPIOA, EXTI_PinSource0);
 
   /* Configure EXTI Line0 */
+  // 這邊設定 EXTI 的 Pin 腳
+  	// 是否為 Event or Interrupt
+  		// 正緣觸發 或是 負緣觸發
   EXTI_InitStructure.EXTI_Line = EXTI_Line0;
   EXTI_InitStructure.EXTI_Mode = EXTI_Mode_Interrupt;
   EXTI_InitStructure.EXTI_Trigger = EXTI_Trigger_Rising;  
-  EXTI_InitStructure.EXTI_LineCmd = ENABLE;
+  EXTI_InitStructure.EXTI_LineCmd = ENABLE;							// FIXME: ????
   EXTI_Init(&EXTI_InitStructure);
 
   /* Enable and set EXTI Line0 Interrupt to the lowest priority */
+  // 這邊設定 EXTI 的 Prority, Channel, IRQ
   NVIC_InitStructure.NVIC_IRQChannel = EXTI0_IRQn;
   NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0x01;
   NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0x01;
