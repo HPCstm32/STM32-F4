@@ -66,6 +66,9 @@ int main(void)
   STM_EVAL_LEDOn(LED4);
   STM_EVAL_LEDOn(LED5);
 
+  // CMSIS 算是 ARM 所提供的 Hardware Abstruction Layer.
+	
+  // SysTick Timer is "1 msec interrupts".
   /* Setup SysTick Timer for 1 msec interrupts.
      ------------------------------------------
     1. The SysTick_Config() function is a CMSIS function which configure:
@@ -92,6 +95,13 @@ int main(void)
        - Reload Value is the parameter to be passed for SysTick_Config() function
        - Reload Value should not exceed 0xFFFFFF
    */
+  
+  // "Reload Value = SysTick Counter Clock (Hz) x  Desired Time base (s)"
+  // Input: ticks  Number of ticks between two interrupts
+  // 意思應該是指，要在多少個 Tick 產生一個 interrupt
+  // 因此在 input 的部分，會和 CPU Clock Rate(Cycle) 有關係
+  // 168 MHz = 一秒鐘 168 百萬個 Tick
+	// 這邊的範例是 1 msec 產生一個 interrupt，而 1 msec 為 168 * 10^6 / 1000 個 Tick
   if (SysTick_Config(SystemCoreClock / 1000))
   { 
     /* Capture error */ 
@@ -104,6 +114,7 @@ int main(void)
     STM_EVAL_LEDToggle(LED3);
     STM_EVAL_LEDToggle(LED6);
 
+	// Delay 需要和 System Tick Interrupt + TimingDelay + Decrements Function 互相搭配
     /* Insert 50 ms delay */
     Delay(50);
 
@@ -111,6 +122,7 @@ int main(void)
     STM_EVAL_LEDToggle(LED4);
     STM_EVAL_LEDToggle(LED5);
 
+	// Delay 需要和 System Tick Interrupt + TimingDelay + Decrements Function 互相搭配
     /* Insert 100 ms delay */
     Delay(100);
   }
@@ -121,6 +133,8 @@ int main(void)
   * @param  nTime: specifies the delay time length, in milliseconds.
   * @retval None
   */
+// 這邊進入後，會被 Lock 住，直到 System Tick 每次都呼叫 TimingDelay_Decrement 減一
+	// 才會被 Unlock 跳出來
 void Delay(__IO uint32_t nTime)
 { 
   TimingDelay = nTime;
@@ -133,6 +147,7 @@ void Delay(__IO uint32_t nTime)
   * @param  None
   * @retval None
   */
+// 這邊會每次都被 System Tick 所呼叫，變數每次都 減一
 void TimingDelay_Decrement(void)
 {
   if (TimingDelay != 0x00)

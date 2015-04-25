@@ -137,8 +137,10 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
+// 重點在於這邊，在每次 SysTick 的 interruput 被發起時，Handler 會被執行
 void SysTick_Handler(void)
 {
+	// 而每次發起時，變數會被 減一
   TimingDelay_Decrement();
 }
 
