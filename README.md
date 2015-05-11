@@ -14,6 +14,4 @@
 
 * /example/STM32F4-Discovery\_FW\_V1.1.0: The STM32F4-Discovery\_FW\_V1.1.0 folder is unzipped by stsw-stm32068.zip.
 
-* /project: External Project Experiment.
-
 * /stm32f429: Clone from https://github.com/MaJerle/stm32f429. This is an example project.
