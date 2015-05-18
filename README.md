@@ -17,5 +17,5 @@
 * /st-link_driver
 
 	* ST-LINK Debugger Driver for Windows 8 (Version 1.0.0): stsw-link006-windows-8-v1.0.0.zip
-
-* /stm32f429: Clone from https://github.com/MaJerle/stm32f429. This is an example project.
+	
+You can refer to https://github.com/jackzzjack/STM32F429-Experiment
