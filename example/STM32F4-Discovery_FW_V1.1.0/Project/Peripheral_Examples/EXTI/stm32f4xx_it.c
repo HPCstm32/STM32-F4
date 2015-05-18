@@ -162,6 +162,8 @@ void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
+// EXTI0 的中斷被觸發時，會執行這邊的 Function
+	// 可以用搜尋的方式尋找這個 Function 名稱，Interrupt 被觸發時，會導到這邊，記錄在 startup_stm32f4xx.s 的啟動組語中。
 void EXTI0_IRQHandler(void)
 {
   if(EXTI_GetITStatus(EXTI_Line0) != RESET)
