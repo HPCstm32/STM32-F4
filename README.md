@@ -1,10 +1,10 @@
-# STM32-F4
+# STM32F407
 
 ## Project File Structure
 
 * /docs: STM32 F4 Documents.
 
-* /example: STSW-STM32068
+* /sample_code: STSW-STM32068
 	
  * STM32F4DISCOVERY board firmware package, including 22 examples (covering USB Host, audio, MEMS accelerometer and microphone) (AN3983)
 
@@ -19,3 +19,5 @@
 	* ST-LINK Debugger Driver for Windows 8 (Version 1.0.0): stsw-link006-windows-8-v1.0.0.zip
 	
 You can refer to https://github.com/jackzzjack/STM32F429-Experiment
+
+# STM32F429
